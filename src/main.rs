@@ -73,14 +73,16 @@
 // }
 
 
-mod cache_read;
-mod compute_average;
+// Import necessary libraries and modules.
+mod cache_read; // Import the cache_read module.
+mod compute_average; // Import the compute_average module.
 
-use clap::{App, Arg};
-use std::error::Error;
+use clap::{App, Arg}; // Import the clap library for command-line argument parsing.
+use std::error::Error; // Import the Error trait for error handling.
 
-#[tokio::main]
+#[tokio::main] // Use the tokio runtime for asynchronous tasks.
 async fn main() -> Result<(), Box<dyn Error>> {
+    // Define the command-line interface using clap.
     let matches = App::new("Rust WebSocket Client")
         .version("1.0")
         .author("Your Name")
@@ -100,17 +102,18 @@ async fn main() -> Result<(), Box<dyn Error>> {
         )
         .get_matches();
 
+    // Match the specified mode and execute the corresponding functionality.
     match matches.value_of("mode").unwrap() {
         "cache" => {
             let times = matches
                 .value_of("times")
                 .unwrap_or("10")
                 .parse::<u32>()
-                .unwrap_or(10);
-            cache_read::run_cache_mode(times).await?;
+                .unwrap_or(10); // Parse the 'times' argument as u32 with a default of 10.
+            cache_read::run_cache_mode(times).await?; // Call the cache mode function from the cache_read module.
         }
         "average" => {
-            compute_average::run_compute_average()?;
+            compute_average::run_compute_average()?; // Call the average mode function from the compute_average module.
         }
         _ => println!("Invalid mode. Use 'cache' or 'average'."),
     }
